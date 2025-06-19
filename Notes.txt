@@ -1,0 +1,104 @@
+Instead of using binary logic with true or false (0,1), this language will use ternary (true, false, unknown) logic.  This will have implications on how
+the language is structured and how it reasons a solution.
+
+Options:
+unknown as null:
+    represented as 32 bit binary:
+        null:  00000000 00000000 00000000 00000000
+        true:  00000000 00000000 00000000 00000001
+        false: 10000000 00000000 00000000 00000001
+
+unknown as zero, true as 1 and false as -1:
+    represented as 32 bit binary:
+        maybe:   00000000 00000000 00000000 00000000
+        true:    00000000 00000000 00000000 00000001
+        false:   10000000 00000000 00000000 00000001
+
+unknown as -1, true as 1, false as zero:
+    represented as 32 bit binary:
+        false:   00000000 00000000 00000000 00000000
+        true:    00000000 00000000 00000000 00000001
+        maybe:   10000000 00000000 00000000 00000001
+
+Tables:
+    And:
+        T   X   F 
+    T:   T   X   F 
+    X:   X   X   F
+    F:   F   F   F 
+
+    Or:
+        T   X   F 
+    T:   T   T   T 
+    X:   T   X   X
+    F:   T   X   F 
+
+    Not:
+        b   -b 
+    T:   T   F 
+    X:   X   X
+    F:   F   T 
+
+    XOr:
+        T   X   F 
+    T:   F   X   T 
+    X:   X   X   X
+    F:   T   X   F 
+
+    a maybe is the result of an illogical (some exception error: 1/0) expression or an expression which does not produce a result (an element of an empty set)
+
+    everything is an expression?
+
+    program : decls
+
+    decls : 
+        | decl
+        | decl decls
+
+    decl : import
+        | global
+        | link
+        | procedure
+        | class
+
+    class : classHead classBody
+
+    classHead : CLASS IDENT LPAREN inheritance RPAREN
+
+    inheritance : 
+        | IDENT
+
+    classBody : attributes 
+
+    attributes : 
+        | attribute 
+        | attribute attributes
+
+    attribute : local
+        | procedure
+
+    local : LOCAL IDENT
+        | LOCAL identList
+
+    procedure : PROC IDENT LPAREN parameters RPAREN block
+
+    parameters : 
+        | identList
+
+    identList : IDENT
+        | IDENT COMMA identList
+    
+    block : expr
+        | LCBR exprs RCBR
+
+    
+    
+    
+    ternary : True
+        | False
+        | Unknown
+
+
+    when (expr) True:block False:block Unknown:block
+
+
